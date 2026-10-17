@@ -1,0 +1,10 @@
+# The data is rebuilt exactly by environment/make_data.py, so it never goes
+# to GitHub. This also keeps the hidden test answers out of the repository.
+**/data/
+
+# Files the solutions write
+**/outputs/
+
+# Python's virtual environment and cache
+.venv/
+__pycache__/
