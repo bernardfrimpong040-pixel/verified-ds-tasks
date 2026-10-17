@@ -58,15 +58,26 @@ underestimate slightly, flawed ones overestimate by at least 0.020.
 | Not too pessimistic | Estimate is at most 0.030 below the real test AUC |
 | Reproducible (×2) | Two runs give byte-identical output files |
 
-The checks were tried on the reference and on four deliberately bad scripts:
+### Flawed solutions (`flawed_solutions/`)
 
-| Solution | Result | Caught by |
-|---|---|---|
-| **Reference** | **13 / 13 pass** | |
-| Random K-fold validation | 12 / 13 | Not overconfident |
-| Reads the hidden answers | Crashes | Runs without error (answers out of reach) |
-| Random seed from the clock | 11 / 13 | Reproducible |
-| Wrong column name | Fails | Format |
+Eight realistic mistakes, each a copy of the reference with **one** change (marked `# <-- MISTAKE`)
+and the check that must catch it. `check_flawed_solutions.py` runs the full test suite on each and
+confirms it is caught **by the intended check**. A crash doesn't count as caught.
+
+| Solution | Mistake | Checks passed | Caught by | Verdict |
+|---|---|---:|---|---|
+| **Reference** | — | **13/13** | — | ✅ passes |
+| f1 | Random K-fold instead of GroupKFold | 12/13 | Not overconfident (estimate +0.020 too high) | ✅ caught |
+| f2 | Passenger-history feature built from the answers | 12/13 | Not overconfident (estimate 0.92 vs real 0.76) | ✅ caught |
+| f3 | Uses `refund_issued` | 12/13 | Not overconfident (+0.140) | ✅ caught |
+| f4 | Reads the hidden test answers | 3/13 | Runs without error (answers out of reach) | ✅ caught |
+| f5 | Folds shuffled without a seed | 11/13 | Reproducible | ✅ caught |
+| f6 | Writes 0/1 labels instead of probabilities | 11/13 | Accuracy (real AUC 0.685) | ✅ caught |
+| f7 | Reports the training score as the estimate | 12/13 | Not overconfident (+0.030) | ✅ caught |
+| f8 | Wrong column name | 8/13 | Format | ✅ caught |
+
+Five of the eight mistakes pass 11 or 12 of the 13 checks; a single targeted check stops each one.
+Full results: [`flawed_solutions/RESULTS.md`](task1_passenger_satisfaction/flawed_solutions/RESULTS.md).
 
 ## Repository structure
 
@@ -76,12 +87,15 @@ verified-ds-tasks/
 ├── requirements.txt               # pinned library versions
 ├── STEP3_GUIDE.md                 # how Task 1 was built and verified
 ├── STEP4_GUIDE.md                 # the automatic checks and how they were proven
+├── STEP5_GUIDE.md                 # flawed solutions and the checker
 └── task1_passenger_satisfaction/
     ├── TASK.md                    # the task statement given to the solver
     ├── environment/
     │   └── make_data.py           # rebuilds the data from a fixed seed
     ├── reference_solution/
     │   └── solve.py               # the verified reference solution
+    ├── check_flawed_solutions.py  # runs every flawed solution through the tests
+    ├── flawed_solutions/          # 8 one-mistake copies of the reference + RESULTS.md
     ├── tests/
     │   ├── conftest.py            # runs the solution twice, hidden answers out of reach
     │   ├── test_task1.py          # the 13 checks
@@ -105,6 +119,8 @@ pytest task1_passenger_satisfaction/tests -v
 
 To check any other solution: `pytest task1_passenger_satisfaction/tests -v --solution path/to/solve.py`
 
+To confirm every flawed solution is caught: `python task1_passenger_satisfaction/check_flawed_solutions.py`
+
 The data and the reference outputs are identical on every run.
 
 ## Roadmap
@@ -113,7 +129,7 @@ The data and the reference outputs are identical on every run.
 |---|---|---|
 | 3 | Task 1 environment and reference solution | ✅ Done |
 | 4 | Automatic checks with `pytest` | ✅ Done |
-| 5 | Deliberately flawed solutions that the checks must catch | Next |
-| 6 | Task 2: a numerical mathematics task | |
+| 5 | Deliberately flawed solutions that the checks must catch | ✅ Done |
+| 6 | Task 2: a numerical mathematics task | Next |
 | 7 | Run an AI coding agent on the tasks and refine them | |
 | 8 | Full documentation for each task | |
