@@ -1,0 +1,5 @@
+{
+  "data/public/train.csv": "ef9e8d66c6d0b76eb663ec3fe0e350e7363d06c3cef4cfa72f4b09ef5058be16",
+  "data/public/test.csv": "6fe5313032de711b3d6aca15b883887b68af0e6ffed4c8948f603234f0d88c6e",
+  "data/hidden/test_labels.csv": "75c256d785b1aa0f73496839ed7f25a0755835780c50d622eb52c1ebdb40b11c"
+}

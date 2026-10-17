@@ -151,9 +151,12 @@ def main():
 
     PUBLIC_DIR.mkdir(parents=True, exist_ok=True)
     HIDDEN_DIR.mkdir(parents=True, exist_ok=True)
-    train[columns + ["satisfied"]].to_csv(PUBLIC_DIR / "train.csv", index=False)
-    test[columns].to_csv(PUBLIC_DIR / "test.csv", index=False)
-    test[["flight_id", "satisfied"]].to_csv(HIDDEN_DIR / "test_labels.csv", index=False)
+    # lineterminator="\n" writes the same line endings on Windows, Mac and Linux,
+    # so the files are byte-for-byte identical on every computer (the tests check this)
+    train[columns + ["satisfied"]].to_csv(PUBLIC_DIR / "train.csv", index=False, lineterminator="\n")
+    test[columns].to_csv(PUBLIC_DIR / "test.csv", index=False, lineterminator="\n")
+    test[["flight_id", "satisfied"]].to_csv(HIDDEN_DIR / "test_labels.csv", index=False,
+                                            lineterminator="\n")
 
     print(f"train.csv: {len(train):,} flights by {train['passenger_id'].nunique():,} passengers "
           f"({train['satisfied'].mean():.1%} satisfied)")

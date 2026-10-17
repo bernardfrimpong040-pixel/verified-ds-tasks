@@ -119,7 +119,7 @@ def main():
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     pd.DataFrame({"flight_id": test["flight_id"],
                   "satisfied_probability": np.round(test_pred, 6)}).to_csv(
-        OUTPUT_DIR / "predictions.csv", index=False)
+        OUTPUT_DIR / "predictions.csv", index=False, lineterminator="\n")
     with open(OUTPUT_DIR / "cv_estimate.json", "w") as f:
         json.dump({"auc": round(float(cv_auc), 6)}, f)
     print(f"Wrote predictions.csv and cv_estimate.json to {OUTPUT_DIR}")

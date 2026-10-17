@@ -76,8 +76,11 @@ A solution passes only if **all** of the following hold:
    customers fails, even if its test score is acceptable.
 4. **Reproducible:** running `python solution/solve.py` twice produces identical files.
 
+These rules are checked automatically by the tests in `tests/`. While your solution runs, the
+hidden answers are moved out of reach, so a solution that tries to read them will crash.
+
 ## Rules
 
 - Use only `data/public/`. Do not read or create anything in `data/hidden/`.
-- Allowed libraries: those in `requirements.txt` (pandas, numpy, scikit-learn, lightgbm).
+- Allowed libraries: pandas, numpy, scikit-learn and lightgbm (versions in `requirements.txt`).
 - The script must finish within 10 minutes on a normal laptop.
