@@ -8,3 +8,6 @@
 # Python's virtual environment and cache
 .venv/
 __pycache__/
+
+# pytest's temporary notes
+.pytest_cache/
